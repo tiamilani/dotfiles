@@ -24,22 +24,22 @@ the alias of a path must be unique.
 
 ## Args
 
-* [-h|--help] show an help message
-* [-d|--dot] path setup the dot directory to use
-* [-a|--add] path [alias] [outputdir] add a path that will be tracked, you can 
+* **[-h|--help]** show an help message
+* **[-d|--dot] path** setup the dot directory to use
+* **[-a|--add] path [alias] [outputdir]** add a path that will be tracked, you can 
 also add an alias for the path but it is optional, if not present an automatic 
 alias will be assigned, you can also set the output dir name, otherwise the
 output dir will be figured out by the path.
-* [-r|--remove] alias|path you can remove a path using an alias or the entire 
+* **[-r|--remove] alias|path** you can remove a path using an alias or the entire 
 path
-* [-l|--list] print the list of actually tracked files
-* [-A|--activate] alias|path you can activate a path that will be from now on 
+* **[-l|--list]** print the list of actually tracked files
+* **[-A|--activate] alias|path** you can activate a path that will be from now on 
 tracked 
-* [-D|--deactivate] alias|path you can deactivate a path that will be from now
+* **[-D|--deactivate]** alias|path you can deactivate a path that will be from now
 on not tracked but will stay in the list of the paths
-* [-v|--verbose] verbose output print almost everything
-* [-s|--silent] silent output print nothing
-* [-od|--outputdir] alias|path outdir change the output dir of path
-* [-op|--outputpath] alias|path outpath change the output path for the dot file
+* **[-v|--verbose]** verbose output print almost everything
+* **[-s|--silent]** silent output print nothing
+* **[-od|--outputdir] alias|path outdir** change the output dir of path
+* **[-op|--outputpath] alias|path outpath** change the output path for the dot file
 remember that if an outputpath is present it will override the outputdir and 
 also the dot dir, no check are performed if this path is inside the dot dir
