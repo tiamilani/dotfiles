@@ -1,0 +1,2 @@
+* install feh
+* copy image
