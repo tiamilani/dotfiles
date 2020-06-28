@@ -1,1 +1,1 @@
-* install lock program for blur and copy image
+* install lock program (i3lock) for blur and copy image
