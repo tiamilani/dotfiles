@@ -30,6 +30,7 @@ alert = #bd2c40
 [underlines]
 volume = #ef6a42
 menu = #6da393
+backlight = #726a95
 
 [bar/leafshade]
 monitor = ${env:MONITOR:}
@@ -64,7 +65,7 @@ font-3 = 3270Narrow Nerd Font:style=Medium:size=10
 
 modules-left = i3
 modules-center = xwindow
-modules-right = spotify pulseaudio wlan battery date powermenu 
+modules-right = spotify pulseaudio backlight wlan battery date powermenu 
 
 tray-position = none
 tray-padding = 2
@@ -90,20 +91,43 @@ format-underline = ${underlines.menu}
 
 label-open = " 拉 "
 #label-open-font = 4
-label-close = " "
+label-close = ""
 label-close-foreground = ${colors.foreground}
 label-separator = " | "
 label-separator-foreground = ${colors.foreground-alt}
 
 
 ; reboot
-menu-0-1 = " "
+menu-0-1 = ""
 menu-0-1-exec = systemctl reboot
 menu-0-1-foreground = ${colors.foreground}
 ; shutdown
 menu-0-0 = ""
 menu-0-0-exec = systemctl poweroff
 menu-0-0-foreground = ${colors.foreground}
+; suspend
+menu-0-2 = " "
+menu-0-2-exec = systemctl suspend
+menu-0-2-foreground = ${colors.foreground}
+
+[module/backlight]
+type = internal/backlight
+
+; Use the following command to list available cards:
+; $ ls -1 /sys/class/backlight/
+card = intel_backlight
+enable-scroll = true
+format = <ramp> <label>
+format-underline = ${underlines.backlight}
+label = %percentage%%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-4 = 
+ramp-5 = 
+ramp-6 = 
 
 [module/pulseaudio]
 type = internal/pulseaudio

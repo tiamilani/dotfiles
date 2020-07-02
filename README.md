@@ -12,5 +12,6 @@ updated time to time
 * vim
 * feh
 ...
+* terminal colors
 
 ## automatic updater
