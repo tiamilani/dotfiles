@@ -4,14 +4,21 @@ updated time to time
 
 ## install guide
 
-* install.sh
+* TBD
 
 ## required software
 
 * i3/i3-gaps/i3-gaps-round
 * vim
 * feh
-...
-* terminal colors
+* dunst
+* Flat-Remix-\* chose the version you prefere and change dunst config
+* i3 lock
+* nerdfonts
+* polybar
+* powerline
+* rofi
+* zsh
 
-## automatic updater
+
+

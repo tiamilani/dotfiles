@@ -1,0 +1,1 @@
+xrandr | grep -q HDMI-1-2 && xrandr --output eDP-1-1 --auto --output HDMI-1-2 --primary --auto --left-of eDP-1-1
