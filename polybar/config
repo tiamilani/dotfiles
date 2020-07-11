@@ -17,10 +17,8 @@
 ;==========================================================
 
 [colors]
-#;background = ${xrdb:color0:#222}
 background = #D2222222
 background-alt = #444
-#;foreground = ${xrdb:color7:#222}
 foreground = #dfdfdf
 foreground-alt = #555
 primary = #ffb52a
@@ -42,8 +40,6 @@ backlight = #726a95
 monitor = ${env:MONITOR:}
 width = 100%
 height = 32 
-#;offset-x = 1%
-#;offset-y = 1%
 radius = 5
 fixed-center = false
 
@@ -75,7 +71,6 @@ modules-right = spotify pulseaudio backlight wlan battery date powermenu
 
 tray-position = none
 tray-padding = 2
-#;tray-background = #0063ff
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -92,11 +87,9 @@ format-underline = ${colors.palette1}
 type = custom/menu
 
 format-foreground = ${colors.foreground}
-#format-background = ${colors.primary}
 format-underline = ${colors.palette2}
 
 label-open = " 拉 "
-#label-open-font = 4
 label-close = ""
 label-close-foreground = ${colors.foreground}
 label-separator = " | "
@@ -270,7 +263,6 @@ time = %H:%M
 time-alt = %H:%M:%S
 
 format-prefix = " " 
-#format-prefix-foreground = ${colors.foreground-alt}
 format-underline = ${colors.palette4} 
 label = %date% %time%
 
@@ -285,7 +277,6 @@ format-charging-underline = ${colors.palette3}
 format-discharging-underline = ${self.format-charging-underline}
 
 format-full-prefix = " "
-#format-full-prefix-foreground = ${colors.foreground-alt}
 format-full-underline = ${colors.palette3}
 
 format-charging-foreground = #ffffff
@@ -316,11 +307,6 @@ animation-charging-framerate = 750
 
 [settings]
 screenchange-reload = true
-#;compositing-background = xor
-#;compositing-background = screen
-#;compositing-foreground = source
-#;compositing-border = over
-#;pseudo-transparency = false
 pseudo-transparency = true
 
 [global/wm]
