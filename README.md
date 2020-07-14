@@ -2,6 +2,8 @@
 
 Updated time to time
 
+![screenshot](images/screenshot_v1.jpg "screenshot")
+
 ## install guide
 
 * TBD
