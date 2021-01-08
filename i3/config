@@ -149,25 +149,35 @@ set $browser "Firefox"
 set $mail "Thunderbird"
 set $spotify "Spotify"
 set $telegram "Telegram"
+set $gorilla "Open Password Database"
 assign [class=$browser] → $browsingworkspace 
 assign [class=$mail] → $socialworkspace
 assign [class=$telegram] → $socialworkspace
+assign [class=$gorilla] → $browsingworkspace
 for_window [class=$spotify] move container to workspace $musicworkspace
 
 # Applications to run at the startup
 
 exec --no-startup-id dual-monitor
+# exec --no-startup-id dual-monitor-trento
 exec firefox
+exec firefox --search "!yt"
 exec thunderbird
 exec spotify
-exec telegram-desktop
+exec password-gorilla
+exec "./Downloads/tsetup.2.4.3/Telegram/Telegram"
 
 # Workspaces position
 
-workspace $musicworkspace output eDP-1-1 primary
-workspace $workworkspace output HDMI-1 HDMI-1-2 DP-1 primary
-workspace $browsingworkspace output HDMI-2 HDMI-1-2 primary
-workspace $socialworkspace output HDMI-2 HDMI-1-2 primary
+# Normal position
+#workspace $musicworkspace output eDP-1 primary
+#workspace $workworkspace output HDMI-1 HDMI-2 DP-1 primary
+#workspace $browsingworkspace output HDMI-2 HDMI-2 primary
+#workspace $socialworkspace output HDMI-1 HDMI-2 primary
+workspace $musicworkspace output primary HDMI-2 eDP-1 
+workspace $workworkspace output HDMI-1 HDMI-2 DP-1 primary 
+workspace $browsingworkspace output HDMI-2 HDMI-2 primary 
+workspace $socialworkspace output HDMI-1 HDMI-2 primary 
 
 # automatically go back to the previus workspace
 workspace_auto_back_and_forth yes
@@ -180,12 +190,14 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # Lock with a shortcut
-bindsym $mod+Shift+p exec "~/i3/lockScript/./lock.sh"
+bindsym $mod+Shift+p exec "~/.config/i3/lockScript/./lock.sh"
+# Execute a screenshot
+bindsym Print exec "flameshot gui"
 # jetbrains loading window float in the center
 for_window [class="jetbrains-.*" title="win0"] floating enable border none
 
 # execute script to change wallpaper every 10 minutes
-exec_always ~/i3/fehScript/feh.sh
+exec_always "~/.config/i3/fehScript/feh.sh"
 # change language keybord layout
 bindsym $mod+i exec "setxkbmap it"
 bindsym $mod+Shift+i exec "setxkbmap gb"
@@ -269,7 +281,8 @@ smart_gaps inverse_outer
 
 smart_borders on
 smart_borders no_gaps
-border_radius 2
+# TODO install i3-gaps-borders
+# border_radius 2
 
 # Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
 set $mode_gaps Gaps: (o) outer, (i) inner
@@ -323,11 +336,11 @@ bindsym XF86TouchpadOff exec --no-startup-id synclient Touchpadoff=1
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 #bar {
-	# outpiut primary
-	# i3bar_command i3bar
-        # status_command i3status
-	# tray_output primary|eDP-1|DP-1|HDMI-2
-	# font pango:DejaVu Sans Mono 10
+#	output primary
+#	i3bar_command i3bar
+#        status_command i3status
+#	tray_output primary|eDP-1|DP-1|HDMI-2
+#	font pango:DejaVu Sans Mono 10
 #}
 
 #######################################################################
@@ -339,4 +352,4 @@ bindsym XF86TouchpadOff exec --no-startup-id synclient Touchpadoff=1
 #
 # Please remove the following exec line:
 #######################################################################
-exec i3-config-wizard
+# exec i3-config-wizard

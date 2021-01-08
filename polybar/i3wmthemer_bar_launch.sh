@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/usr/bin/env sh
 killall -q polybar
 
 # Wait until the processes have been shut down

@@ -80,7 +80,7 @@ type = custom/script
 interval = 1
 format-prefix = "🎵 "
 format = <label>
-exec = python $HOME/i3/spotify_status.py -f '{artist}: {song}'
+exec = python $HOME/.config/spotifyScript/spotify_status.py -f '{artist}: {song}'
 format-underline = ${colors.palette1} 
 
 [module/powermenu]
@@ -89,7 +89,7 @@ type = custom/menu
 format-foreground = ${colors.foreground}
 format-underline = ${colors.palette2}
 
-label-open = " 拉 "
+label-open = "拉 "
 label-close = ""
 label-close-foreground = ${colors.foreground}
 label-separator = " | "
@@ -138,7 +138,7 @@ interval = 5
 
 format-volume =  <ramp-volume> <label-volume>
 format-muted = <label-muted>
-label-volume =  %percentage%%
+label-volume = %percentage%%
 format-volume-underline = ${colors.palette4}
 format-muted-underline = ${colors.palette4}
 
