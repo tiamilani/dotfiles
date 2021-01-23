@@ -8,5 +8,5 @@ _screen() {
 
 for i in $( xrandr -q | grep ' connected' | grep -oP '\d+x\d+\+\d+\+\d+')
 do
-    _screen "$i" "$HOME/Pictures/Sfondi/strada.jpg"
+    _screen "$i" "$HOME/Pictures/Sfondi/DSC_0250.jpg"
 done
