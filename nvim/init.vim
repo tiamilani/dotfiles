@@ -46,15 +46,87 @@ call plug#begin('~/nvim/plugged')
 Plug 'gruvbox-community/gruvbox'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
+" Remember C-v to split vertically, C-x split, C-x for tab
 Plug 'nvim-telescope/telescope.nvim'
+" We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Powerline bar
+Plug 'vim-airline/vim-airline'
+" airline themes
+Plug 'vim-airline/vim-airline-themes'
+" You complete me
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Python doc generator
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
+" Automatic double quotes
+Plug 'jiangmiao/auto-pairs'
+" Comment lines with <leader>cc de comment them with <leader>cu
+Plug 'scrooloose/nerdcommenter'
+" floding, buggy
+" Plug 'tmhedberg/SimpylFold'
+" Multiple automation tool
+Plug 'neomake/neomake'
 
 call plug#end()
 
 colorscheme gruvbox
 set background=dark
 
-if executable('rg')                                                                                          
-    let g:rg_derive_root='true'                                                                              
-endif                                                                                                        
-                                                                                                             
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']  
+if executable('rg')
+    let g:rg_derive_root='true'
+endif
+
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+let mapleader = " "
+
+" YCM
+nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
+nnoremap <silent> <leader>gf :YcmCompleter GoToReferences<CR>
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+
+" Telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope grep_string<cr>
+nnoremap <leader>flg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>tgc <cmd>Telescope git_commits<cr>
+nnoremap <leader>tgs <cmd>Telescope git_status<cr>
+
+" Pydocstring
+nnoremap <leader>pd <cmd>Pydocstring<cr>
+nnoremap <leader>PD <cmd>PydocstringFormat<cr>
+let g:pydocstring_formatter = 'numpy'
+
+" auto pairs
+au FileType vim let b:AutoPairs = AutoPairsDefine({})
+
+" SimplyFold
+" let g:SimpylFold_docstring_preview = 1
+
+" Neomake linteger
+let g:neomake_python_enabled_makers = ['flake8']
+call neomake#configure#automake('nrwi', 500)
+
+" treesitter conf install every module
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+}
+EOF
+
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+augroup TIA
+    autocmd!
+    autocmd BufWritePre * :call TrimWhitespace()
+augroup END
+
