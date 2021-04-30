@@ -27,9 +27,9 @@ font pango:DejaVu Sans Mono 11
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
 set $up k
-set $down j 
+set $down j
 set $left h
-set $right l 
+set $right l
 
 set $mod Mod4
 
@@ -40,7 +40,7 @@ set $socialworkspace "4:social"
 
 # use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-# You can also use any non-zero value if you'd like to have a border
+# You can also use any non-zero value if youe'd like to have a border
 for_window [class=".*"] border pixel 0
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -54,7 +54,7 @@ bindsym $mod+Shift+q kill
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-bindsym $mod+d exec rofi -theme $HOME/.config/rofi/gruvrofi.rasi -show drun -modi drun 
+bindsym $mod+d exec rofi -theme $HOME/.config/rofi/gruvrofi.rasi -show drun -modi drun
 
 # change border
 #default_border none
@@ -150,10 +150,10 @@ set $mail "Thunderbird"
 set $spotify "Spotify"
 set $telegram "Telegram"
 set $gorilla "Open Password Database"
-assign [class=$browser] → $browsingworkspace 
+assign [class=$browser] → $browsingworkspace
 assign [class=$mail] → $socialworkspace
 assign [class=$telegram] → $socialworkspace
-assign [class=$gorilla] → $browsingworkspace
+assign [class=$gorilla] → $musicworkspace
 for_window [class=$spotify] move container to workspace $musicworkspace
 
 # Applications to run at the startup
@@ -174,10 +174,10 @@ exec "./Downloads/tsetup.2.4.3/Telegram/Telegram"
 #workspace $workworkspace output HDMI-1 HDMI-2 DP-1 primary
 #workspace $browsingworkspace output HDMI-2 HDMI-2 primary
 #workspace $socialworkspace output HDMI-1 HDMI-2 primary
-workspace $musicworkspace output primary HDMI-2 eDP-1 
-workspace $workworkspace output HDMI-1 HDMI-2 DP-1 primary 
-workspace $browsingworkspace output HDMI-2 HDMI-2 primary 
-workspace $socialworkspace output HDMI-1 HDMI-2 primary 
+workspace $musicworkspace output eDP1 HDMI2 primary
+workspace $workworkspace output HDMI1 HDMI2 DP1 primary
+workspace $browsingworkspace output HDMI2 HDMI2 primary
+workspace $socialworkspace output HDMI1 HDMI2 primary
 
 # automatically go back to the previus workspace
 workspace_auto_back_and_forth yes
@@ -200,7 +200,7 @@ for_window [class="jetbrains-.*" title="win0"] floating enable border none
 exec_always "~/.config/i3/fehScript/feh.sh"
 # change language keybord layout
 bindsym $mod+i exec "setxkbmap it"
-bindsym $mod+Shift+i exec "setxkbmap gb"
+bindsym $mod+Shift+i exec "setxkbmap us"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -263,6 +263,8 @@ bindsym $mod+x move workspace to output right
 
 # exec polybar
 exec_always --no-startup-id $HOME/.config/polybar/i3wmthemer_bar_launch.sh
+# exec the keybindings
+exec --no-startup-id setxkbmap -option "compose:ralt"
 
 # colors
 # class                 border  backgr. text    indicator child_border
@@ -326,12 +328,22 @@ exec --no-startup-id mate-power-manager
 
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -c 0 -q set Master 2dB+ unmute
 bindsym XF86AudioLowerVolume exec --no-startup-id amixer -c 0 -q set Master 2db- unmute
-bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+#bindsym XF86AudioMute exec --no-startup-id amixer -q set Master toggle
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
-# touchpad on and off controller on laptop with Fn+<touchpad control functional key>
-bindsym XF86TouchpadOn exec --no-startup-id synclient Touchpadoff=0
-bindsym XF86TouchpadOff exec --no-startup-id synclient Touchpadoff=1
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
+bindsym F4 exec xbacklight -inc 20 # increase screen brightness
+bindsym F3 exec xbacklight -dec 20 # decrease screen brightness
 
+# Touchpad controls
+# bindsym XF86TouchpadToggle exec ~/dotfiles/i3/toggletouchpad.sh # toggle touchpad
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)

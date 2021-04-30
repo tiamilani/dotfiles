@@ -40,6 +40,9 @@ set signcolumn=yes
 " 80 character column
 set colorcolumn=80
 
+" Spell checker
+set spelllang=en
+
 " Plugins
 call plug#begin('~/nvim/plugged')
 
@@ -66,6 +69,8 @@ Plug 'scrooloose/nerdcommenter'
 " Plug 'tmhedberg/SimpylFold'
 " Multiple automation tool
 Plug 'neomake/neomake'
+" fugitive for git integration
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -79,6 +84,12 @@ endif
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 let mapleader = " "
+
+" muvements
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>l :wincmd l<CR>
 
 " YCM
 nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
@@ -99,6 +110,9 @@ nnoremap <leader>pd <cmd>Pydocstring<cr>
 nnoremap <leader>PD <cmd>PydocstringFormat<cr>
 let g:pydocstring_formatter = 'numpy'
 
+" Fugitive
+nnoremap <leader>gs <cmd>Git<CR>
+
 " auto pairs
 au FileType vim let b:AutoPairs = AutoPairsDefine({})
 
@@ -112,7 +126,7 @@ call neomake#configure#automake('nrwi', 500)
 " treesitter conf install every module
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = {"python", "bash", "c", "jsonc", "latex", }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
     enable = true,              -- false will disable the whole extension
   },
@@ -125,8 +139,13 @@ fun! TrimWhitespace()
     call winrestview(l:save)
 endfun
 
+fun! SpellCheck()
+   set spell
+endfun
+
 augroup TIA
     autocmd!
     autocmd BufWritePre * :call TrimWhitespace()
+	autocmd BufWritePre *.tex :call SpellCheck()
 augroup END
 
