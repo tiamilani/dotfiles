@@ -71,6 +71,8 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'neomake/neomake'
 " fugitive for git integration
 Plug 'tpope/vim-fugitive'
+" Game
+Plug 'ThePrimeagen/vim-be-good'
 
 call plug#end()
 
