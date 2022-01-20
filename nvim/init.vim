@@ -43,8 +43,11 @@ set colorcolumn=80
 " Spell checker
 set spelllang=en
 
+" Update time
+set updatetime=300
+
 " Plugins
-call plug#begin('~/nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'gruvbox-community/gruvbox'
 Plug 'nvim-lua/popup.nvim'
@@ -58,15 +61,15 @@ Plug 'vim-airline/vim-airline'
 " airline themes
 Plug 'vim-airline/vim-airline-themes'
 " You complete me
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Use release branch (recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Python doc generator
-Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
+Plug 'heavenshell/vim-pydocstring', { 'do': 'make install', 'for': 'python' }
 " Automatic double quotes
 Plug 'jiangmiao/auto-pairs'
 " Comment lines with <leader>cc de comment them with <leader>cu
-Plug 'scrooloose/nerdcommenter'
-" floding, buggy
-" Plug 'tmhedberg/SimpylFold'
+Plug 'preservim/nerdcommenter'
 " Multiple automation tool
 Plug 'neomake/neomake'
 " fugitive for git integration
@@ -87,17 +90,27 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 
 let mapleader = " "
 
-" muvements
+" Configure the nerdcommenter
+filetype plugin on
+let g:NERDDefaultAlign = 'left'
+let g:NERDSpaceDelims = 0
+" Remember to use <leader>c<space>
+
+" movements
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 
+" skeletons
+nnoremap ,pymain :-1read $HOME/.config/nvim/skeletons/skeleton.python_main<CR>
+nnoremap ,pyclass :-1read $HOME/.config/nvim/skeletons/skeleton.python_class<CR>
+
 " YCM
-nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
-nnoremap <silent> <leader>gf :YcmCompleter GoToReferences<CR>
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
+" nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
+" nnoremap <silent> <leader>gf :YcmCompleter GoToReferences<CR>
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " Telescope
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -118,12 +131,12 @@ nnoremap <leader>gs <cmd>Git<CR>
 " auto pairs
 au FileType vim let b:AutoPairs = AutoPairsDefine({})
 
-" SimplyFold
-" let g:SimpylFold_docstring_preview = 1
+" pydock
+let g:pydocstring_doq_path = '/home/mattia/.local/bin/doq'
 
 " Neomake linteger
-let g:neomake_python_enabled_makers = ['flake8']
-call neomake#configure#automake('nrwi', 500)
+let g:neomake_python_enabled_makers = ['pylint']
+call neomake#configure#automake('nrw', 50)
 
 " treesitter conf install every module
 lua <<EOF
@@ -134,6 +147,36 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+" Coc configurations
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" GoTo code navigation.
+nnoremap <silent> <leader>gd <Plug>(coc-definition)
+nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
+nnoremap <silent> <leader>gi <Plug>(coc-implementation)
+nnoremap <silent> <leader>gr <Plug>(coc-references)
 
 fun! TrimWhitespace()
     let l:save = winsaveview()
@@ -149,5 +192,7 @@ augroup TIA
     autocmd!
     autocmd BufWritePre * :call TrimWhitespace()
 	autocmd BufWritePre *.tex :call SpellCheck()
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType python,yaml,json setl formatexpr=CocAction('formatSelected')
 augroup END
 
