@@ -52,7 +52,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'gruvbox-community/gruvbox'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
-" Remember C-v to split vertically, C-x split, C-x for tab
 Plug 'nvim-telescope/telescope.nvim'
 " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -60,8 +59,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-airline/vim-airline'
 " airline themes
 Plug 'vim-airline/vim-airline-themes'
-" You complete me
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Python doc generator
@@ -76,6 +73,9 @@ Plug 'neomake/neomake'
 Plug 'tpope/vim-fugitive'
 " Game
 Plug 'ThePrimeagen/vim-be-good'
+" Classic file explorer
+Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
+" Plug 'nvim-tree/nvim-tree.lua'
 
 call plug#end()
 
@@ -96,15 +96,21 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 0
 " Remember to use <leader>c<space>
 
+" in visual mode remap p to substitute what is currently select with the
+" current copied buffer
+vnoremap p "_dP
+
 " movements
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>s <C-w><C-x>
 
 " skeletons
 nnoremap ,pymain :-1read $HOME/.config/nvim/skeletons/skeleton.python_main<CR>
 nnoremap ,pyclass :-1read $HOME/.config/nvim/skeletons/skeleton.python_class<CR>
+nnoremap ,pyargs :-1read $HOME/.config/nvim/skeletons/skeleton.python_args<CR>
 
 " YCM
 " nnoremap <silent> <leader>gd :YcmCompleter GoTo<CR>
@@ -141,27 +147,42 @@ call neomake#configure#automake('nrw', 50)
 " treesitter conf install every module
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"python", "bash", "c", "jsonc", "latex", }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ensure_installed = {"python", "bash", "c", "jsonc", "latex", "bibtex", "dockerfile", "lua", "vim"},
   highlight = {
-    enable = true,              -- false will disable the whole extension
+    enable = true,
   },
 }
 EOF
 
-" Coc configurations
+let g:coc_node_args = ['--max-old-space-size=8192']
+
 " Use tab for trigger completion with characters ahead and navigate.
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
@@ -172,12 +193,18 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
+" Add `:dict` command to add a word to user dictionary.
+command! -nargs=0 Dict :call     CocAction('runCommand', 'cSpell.addWordToUserDictionary' expand('<cword>'))
+nnoremap \print :echo printf('word under cursor: %s',expand('<cword>'))<CR>
+
 " GoTo code navigation.
 nnoremap <silent> <leader>gd <Plug>(coc-definition)
 nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
 nnoremap <silent> <leader>gi <Plug>(coc-implementation)
 nnoremap <silent> <leader>gr <Plug>(coc-references)
+nnoremap <silent> <leader>ad <cmd>CocCommand cSpell.addWordToUserDictionary expand('<cword>')<CR>
 
+" Nvim-tree configuration
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e

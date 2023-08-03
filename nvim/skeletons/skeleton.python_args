@@ -14,24 +14,25 @@
 # Copyright (C) 2020 Mattia Milani <mattia.milani@nokia.com>
 
 """
-class module
-============
+Main module
+===========
 
-Use this module to manage a class object.
+Main module of the project, use it to load all the different parts and
+generate the required datasets
+
 """
 
-class <className>:
-    """<className>.
+import argparse
 
-	General object handler class
-	"""
+parser = argparse.ArgumentParser(usage="usage: main.py [options]",
+                      description="Execute the program",
+                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-c", "--confFile", dest="file", default="basic.yaml",
+                    action="store", help="define the yaml input file")
 
+def main():
+    options = parser.parse_args()
+	print("Hello world")
 
-    def __init__(self):
-		"""__init__.
-
-		Parameters
-		----------
-		"""
-		print("Hello from class init")
-
+if __name__ == "__main__":
+	main()
