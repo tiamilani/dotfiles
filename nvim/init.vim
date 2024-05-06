@@ -50,6 +50,7 @@ set colorcolumn=80
 
 " Spell checker
 set spelllang=en
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 " Update time
 set updatetime=300
@@ -120,6 +121,7 @@ nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>s <C-w><C-x>
 nnoremap <leader><TAB> gt
 nnoremap <leader><S-Tab> gT
+<<<<<<< HEAD
 
 " COQ
 let g:coq_settings = { 'auto_start': v:true }
@@ -180,15 +182,13 @@ EOF
 nnoremap <leader>pd <cmd>Pydocstring<cr>
 nnoremap <leader>PD <cmd>PydocstringFormat<cr>
 let g:pydocstring_formatter = 'numpy'
+let g:pydocstring_doq_path = '/home/mattia/.local/bin/doq'
 
 " Fugitive
-nnoremap <leader>gs <cmd>Git<CR>
+"nnoremap <leader>gs <cmd>Git<CR>
 
 " auto pairs
 au FileType vim let b:AutoPairs = AutoPairsDefine({})
-
-" pydock
-let g:pydocstring_doq_path = '/home/mattia/.local/bin/doq'
 
 " Neomake linteger
 let g:neomake_python_enabled_makers = ['pylint']
@@ -200,22 +200,15 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {"python", "bash", "c", "jsonc", "latex", "bibtex", "dockerfile", "lua", "vim", "matlab"},
   highlight = {
     enable = true,
+	disable={ "latex", "bibtex" },
   },
 }
 EOF
-
-" GoTo code navigation.
-nnoremap <silent> <leader>gd <Plug>(coc-definition)
-nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
-nnoremap <silent> <leader>gi <Plug>(coc-implementation)
-nnoremap <silent> <leader>gr <Plug>(coc-references)
-" nnoremap <silent> <leader>ad <cmd>CocCommand cSpell.addWordToUserDictionary expand('<cword>')<CR>
 
 let g:python3_host_prog = '/usr/bin/python3.10'
 
 let g:mkdp_port = '54321'
 let g:mkdp_open_to_the_world = 1
-
 
 fun! TrimWhitespace()
     let l:save = winsaveview()
@@ -224,8 +217,20 @@ fun! TrimWhitespace()
 endfun
 
 fun! SpellCheck()
-   set spell
+		set spell
 endfun
+
+let g:mkdp_auto_close = 0
+
+let g:tex_flavor='latex'
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_quickfix_mode=0
+let g:vimtex_compiler_progname = 'nvr'
+
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 augroup TIA
     autocmd!
