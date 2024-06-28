@@ -63,8 +63,7 @@ Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
-Plug 'KilloPillers/telescope-media-files.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'beauwilliams/statusline.lua'
@@ -81,13 +80,12 @@ Plug 'neomake/neomake'
 " fugitive for git integration
 Plug 'tpope/vim-fugitive'
 " Game
-Plug 'ThePrimeagen/vim-be-good'
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'numToStr/Comment.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 
+Plug 'lervag/vimtex', { 'tag': 'v2.15' }
 call plug#end()
 
 colorscheme gruvbox-baby
@@ -121,7 +119,6 @@ nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>s <C-w><C-x>
 nnoremap <leader><TAB> gt
 nnoremap <leader><S-Tab> gT
-<<<<<<< HEAD
 
 " COQ
 let g:coq_settings = { 'auto_start': v:true }
@@ -237,5 +234,5 @@ augroup TIA
     autocmd BufWritePre * :call TrimWhitespace()
 	autocmd BufWritePre *.tex :call SpellCheck()
     " Setup formatexpr specified filetype(s).
-    autocmd FileType python,yaml,json,matlab setl formatexpr=CocAction('formatSelected')
+    " autocmd FileType python,yaml,json,matlab setl formatexpr=CocAction('formatSelected')
 augroup END
