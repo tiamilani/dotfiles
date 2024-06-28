@@ -1,0 +1,1 @@
+xrandr | grep "connected" && xrandr --output eDP-1-1 --auto --output DP-1-2-8 --primary --left-of eDP-1-1 --output DP-1-2-1 --left-of DP-1-2-8
