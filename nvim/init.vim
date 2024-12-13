@@ -30,7 +30,7 @@ set undofile
 
 " Tab of 4 spaces
 set noexpandtab
-set tabstop=4
+set tabstop=8
 set nosmarttab
 set autoindent
 " trigger `autoread` when files changes on disk
@@ -57,13 +57,13 @@ set updatetime=300
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
 
-"Plug 'gruvbox-community/gruvbox'
 Plug 'luisiacc/gruvbox-baby', {'branch': 'main'}
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.6' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 Plug 'KilloPillers/telescope-media-files.nvim'
+"
 " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'beauwilliams/statusline.lua'
@@ -86,6 +86,8 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'numToStr/Comment.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+Plug 'MunifTanjim/nui.nvim'
+Plug 'nvim-neo-tree/neo-tree.nvim', {'tag': '3.26'}
 
 call plug#end()
 
@@ -107,6 +109,10 @@ let mapleader = " "
 
 " Configure the commenter
 lua require('Comment').setup()
+
+" Configure neo-tree
+lua require('_neo-tree')
+nnoremap <leader>e :Neotree toggle<CR>
 
 " in visual mode remap p to substitute what is currently select with the
 " current copied buffer
@@ -153,11 +159,11 @@ nnoremap ,mfunction :-1read $HOME/.config/nvim/skeletons/skeleton.matlab_functio
 " Telescope
 nnoremap <leader>ff <cmd>Telescope find_files prompt_prefix=🔍<cr>
 nnoremap <leader>faf <cmd>Telescope find_files no_ignore=true prompt_prefix=🔍<cr>
-nnoremap <leader>fg <cmd>Telescope grep_string<cr>
-nnoremap <leader>flg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fgs <cmd>Telescope grep_string<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>tgc <cmd>Telescope git_commits<cr>
-nnoremap <leader>tgs <cmd>Telescope git_status<cr>
+nnoremap <leader>tGc <cmd>Telescope git_commits<cr>
+nnoremap <leader>tGs <cmd>Telescope git_status<cr>
 
 lua require('_telescope')
 lua vim.keymap.set('n', '*', '*zz', {desc = 'Search and center screen'})
@@ -216,6 +222,20 @@ let g:python3_host_prog = '/usr/bin/python3.10'
 let g:mkdp_port = '54321'
 let g:mkdp_open_to_the_world = 1
 
+" Linux coding style for DPDK project
+let g:linuxsty_patterns = ["/home/mattia/src/lookaside-nnar/dpdk/dpdk-24.03/examples/eCPRI_decoder"]
+
+" Copilot basic options
+set completeopt+=noinsert
+imap <silent> <C-Space> <Plug>(copilot-suggest)
+" M- stands for the left alt key
+imap <silent> <M-.> <Plug>(copilot-next)
+imap <silent> <M-,> <Plug>(copilot-previous)
+imap <silent> <C-W> <Plug>(copilot-accept-word)
+"vim.keymap.set('i', '<C-W>', '<Plug>(copilot-accept-word)')
+"vim.keymap.set("i", "<C-Tab>", "copilot#Next()", {expr=true, silient=true})
+"vim.keymap.set("i", "<C-S-Tab>", "copilot#Previous()", {expr=true, silient=true})
+"vim.keymap.set('i', '<C-Space>', "copilot#sugest()", {expr=true, silent=true})
 
 fun! TrimWhitespace()
     let l:save = winsaveview()
