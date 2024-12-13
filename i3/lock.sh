@@ -1,0 +1,1 @@
+/home/mattia/dotfiles/lockscript/lock.sh

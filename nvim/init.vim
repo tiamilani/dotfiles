@@ -50,6 +50,7 @@ set colorcolumn=80
 
 " Spell checker
 set spelllang=en
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 " Update time
 set updatetime=300
@@ -62,8 +63,6 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
-Plug 'KilloPillers/telescope-media-files.nvim'
-"
 " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'beauwilliams/statusline.lua'
@@ -80,15 +79,14 @@ Plug 'neomake/neomake'
 " fugitive for git integration
 Plug 'tpope/vim-fugitive'
 " Game
-Plug 'ThePrimeagen/vim-be-good'
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 Plug 'numToStr/Comment.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
 Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-neo-tree/neo-tree.nvim', {'tag': '3.26'}
 
+Plug 'lervag/vimtex', { 'tag': 'v2.15' }
 call plug#end()
 
 colorscheme gruvbox-baby
@@ -186,15 +184,13 @@ EOF
 nnoremap <leader>pd <cmd>Pydocstring<cr>
 nnoremap <leader>PD <cmd>PydocstringFormat<cr>
 let g:pydocstring_formatter = 'numpy'
+let g:pydocstring_doq_path = '/home/mattia/.local/bin/doq'
 
 " Fugitive
-nnoremap <leader>gs <cmd>Git<CR>
+"nnoremap <leader>gs <cmd>Git<CR>
 
 " auto pairs
 au FileType vim let b:AutoPairs = AutoPairsDefine({})
-
-" pydock
-let g:pydocstring_doq_path = '/home/mattia/.local/bin/doq'
 
 " Neomake linteger
 let g:neomake_python_enabled_makers = ['pylint']
@@ -206,16 +202,10 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = {"python", "bash", "c", "jsonc", "latex", "bibtex", "dockerfile", "lua", "vim", "matlab"},
   highlight = {
     enable = true,
+	disable={ "latex", "bibtex" },
   },
 }
 EOF
-
-" GoTo code navigation.
-nnoremap <silent> <leader>gd <Plug>(coc-definition)
-nnoremap <silent> <leader>gy <Plug>(coc-type-definition)
-nnoremap <silent> <leader>gi <Plug>(coc-implementation)
-nnoremap <silent> <leader>gr <Plug>(coc-references)
-" nnoremap <silent> <leader>ad <cmd>CocCommand cSpell.addWordToUserDictionary expand('<cword>')<CR>
 
 let g:python3_host_prog = '/usr/bin/python3.10'
 
@@ -244,13 +234,25 @@ fun! TrimWhitespace()
 endfun
 
 fun! SpellCheck()
-   set spell
+		set spell
 endfun
+
+let g:mkdp_auto_close = 0
+
+let g:tex_flavor='latex'
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_quickfix_mode=0
+let g:vimtex_compiler_progname = 'nvr'
+
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 augroup TIA
     autocmd!
     autocmd BufWritePre * :call TrimWhitespace()
 	autocmd BufWritePre *.tex :call SpellCheck()
     " Setup formatexpr specified filetype(s).
-    autocmd FileType python,yaml,json,matlab setl formatexpr=CocAction('formatSelected')
+    " autocmd FileType python,yaml,json,matlab setl formatexpr=CocAction('formatSelected')
 augroup END
